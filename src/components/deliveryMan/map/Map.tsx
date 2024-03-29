@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import React, { useEffect, useState } from "react";
+import {
+  GoogleMap,
+  LoadScript,
+  DirectionsService,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 
 interface MapProps {
-  destination: string; 
+  destination: string;
 }
 
 const MapContainer: React.FC<MapProps> = ({ destination }) => {
-  const [response, setResponse] = useState<google.maps.DirectionsResult | null>(null);
-  const [origin, setOrigin] = useState<google.maps.LatLngLiteral | undefined>(undefined);
+  const [response, setResponse] = useState<google.maps.DirectionsResult | null>(
+    null
+  );
+  const [origin, setOrigin] = useState<google.maps.LatLngLiteral | undefined>(
+    undefined
+  );
   const [error, setError] = useState<string | null>(null);
   const mapStyles = {
     width: "300px",
@@ -24,31 +33,32 @@ const MapContainer: React.FC<MapProps> = ({ destination }) => {
     };
 
     const errorCallback = (error: GeolocationPositionError) => {
-      setError('No se pudo obtener la ubicación actual.');
+      setError("No se pudo obtener la ubicación actual.");
       console.error(error);
     };
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     } else {
-      setError('Geolocalización no soportada por tu navegador.');
+      setError("Geolocalización no soportada por tu navegador.");
     }
   }, []);
 
   return (
-    <div style={{ height: '400px' }}>
-      <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || "UNDEFINED"} onLoad={() => {
-        if (origin) {
-          console.log("Mapa cargado correctamente");
+    <div style={{ height: "400px" }}>
+      <LoadScript
+        googleMapsApiKey={
+          process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || "UNDEFINED"
         }
-      }}>
+        onLoad={() => {}}
+      >
         {origin && (
           <GoogleMap
             mapContainerStyle={mapStyles}
             center={origin}
             zoom={13}
             onLoad={(map) => {
-              map.addListener('scroll',()=>{});
+              map.addListener("scroll", () => {});
             }}
           >
             {destination && (
@@ -62,7 +72,7 @@ const MapContainer: React.FC<MapProps> = ({ destination }) => {
                   if (status === google.maps.DirectionsStatus.OK) {
                     setResponse(result);
                   } else {
-                    setError('No se pudo calcular la ruta.');
+                    setError("No se pudo calcular la ruta.");
                   }
                 }}
               />
@@ -83,4 +93,3 @@ const MapContainer: React.FC<MapProps> = ({ destination }) => {
 };
 
 export default MapContainer;
-
