@@ -45,6 +45,7 @@ const DeliveryInProgress = () => {
       await packageServiceStartTrip(params.id.toString());
       try {
         toast.success("Comenzo el reparto", {
+          duration: 1500,
           description: "Presta atencion al camino!",
         });
         return fetchPackage();
@@ -62,7 +63,7 @@ const DeliveryInProgress = () => {
         });
         return setTimeout(() => {
           router.push("/delivery-man/start-work-day");
-        }, 1200);
+        }, 2000);
       } catch (error) {
         return toast.error("No se pudo finalizar el viaje", {
           description: "Refresque e intente nuevamente!",
@@ -117,7 +118,7 @@ const DeliveryInProgress = () => {
                   ? "finalizar"
                   : currentPackage.status === "pending"
                   ? "comenzar"
-                  : ""
+                  : "volver"
               }
             />
           </div>
@@ -131,7 +132,12 @@ const DeliveryInProgress = () => {
             cancelar entrega
           </button>
         </div>
-        <Toaster richColors position="top-center" expand={true} />
+        <Toaster
+          richColors
+          position="top-center"
+          expand={true}
+          closeButton={true}
+        />
       </div>
     </>
   );

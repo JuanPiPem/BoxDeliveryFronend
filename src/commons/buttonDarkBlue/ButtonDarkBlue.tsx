@@ -4,7 +4,7 @@ import { PulseLoader } from "react-spinners";
 
 type Prop = {
   text: string | undefined;
-  loading: boolean;
+  loading?: boolean;
 };
 
 const ButtonDarkBlue = (prop: Prop) => {
