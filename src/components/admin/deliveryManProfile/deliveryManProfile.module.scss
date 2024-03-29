@@ -72,3 +72,15 @@
 .packages {
   padding-bottom: 20px;
 }
+.btnGoHome {
+  height: 35px;
+  padding: 8px 110px;
+  background: transparent;
+  border-radius: 10px;
+  border: 1px solid $light-yellow;
+  color: $dark-green;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 13px;
+}

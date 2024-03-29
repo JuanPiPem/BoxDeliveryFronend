@@ -17,6 +17,7 @@ import {
 } from "services/user.service";
 import { useParams } from "next/navigation";
 import { removeCurrentDeliveryMen, setCurrentDeliveryMen } from "state/user";
+import Link from "next/link";
 
 type PendingPackage = {
   id: string;
@@ -40,6 +41,7 @@ const DeliveryManProfile = () => {
   const [deliveredPackages, setDeliveredPackages] = useState<PendingPackage[]>(
     []
   );
+  const [noDeliveryMan, setNoDeliveryMan] = useState(false);
   const currentDeliveryMen = useSelector(
     (state: RootState) => state.currentDeliveryMen
   );
@@ -48,8 +50,10 @@ const DeliveryManProfile = () => {
     const fetchDeliveryMan = async () => {
       const deliveryMan = await userServiceGetSingle(id);
       try {
-        dispatch(removeCurrentDeliveryMen());
-        dispatch(setCurrentDeliveryMen(deliveryMan));
+        if (deliveryMan) {
+          dispatch(removeCurrentDeliveryMen());
+          dispatch(setCurrentDeliveryMen(deliveryMan));
+        } else setNoDeliveryMan(true);
       } catch (error) {
         console.error(error);
       }
@@ -76,63 +80,66 @@ const DeliveryManProfile = () => {
   };
 
   useEffect(() => {
-    const fetchPendingPackages = async () => {
-      try {
-        if (currentDeliveryMen.id !== null) {
-          const response = await packageServiceGetPackagesByUserIdAndStatus(
-            currentDeliveryMen.id,
-            "pending"
-          );
-
-          setPendingPackages(response);
-        } else {
-          return;
+    if (currentDeliveryMen.id) {
+      const fetchPendingPackages = async () => {
+        try {
+          if (currentDeliveryMen.id !== null) {
+            const response = await packageServiceGetPackagesByUserIdAndStatus(
+              currentDeliveryMen.id,
+              "pending"
+            );
+            setPendingPackages(response);
+          } else {
+            return;
+          }
+        } catch (error) {
+          console.error("Error fetching pending packages:", error);
         }
-      } catch (error) {
-        console.error("Error fetching pending packages:", error);
-      }
-    };
-
-    fetchPendingPackages();
+      };
+      fetchPendingPackages();
+    }
   }, [currentDeliveryMen]);
 
   useEffect(() => {
-    const fetchDeliveredPackages = async () => {
-      try {
-        if (currentDeliveryMen.id !== null) {
-          const response = await packageServiceGetPackagesByUserIdAndStatus(
-            currentDeliveryMen.id,
-            "delivered"
-          );
-          setDeliveredPackages(response);
-        } else {
-          return;
+    if (currentDeliveryMen.id) {
+      const fetchDeliveredPackages = async () => {
+        try {
+          if (currentDeliveryMen.id !== null) {
+            const response = await packageServiceGetPackagesByUserIdAndStatus(
+              currentDeliveryMen.id,
+              "delivered"
+            );
+            setDeliveredPackages(response);
+          } else {
+            return;
+          }
+        } catch (error) {
+          console.error("Error fetching delivered packages:", error);
         }
-      } catch (error) {
-        console.error("Error fetching delivered packages:", error);
-      }
-    };
-    fetchDeliveredPackages();
+      };
+      fetchDeliveredPackages();
+    }
   }, [currentDeliveryMen]);
 
   useEffect(() => {
-    const fetchOngoingPackages = async () => {
-      try {
-        if (currentDeliveryMen.id !== null) {
-          const response = await packageServiceGetPackagesByUserIdAndStatus(
-            currentDeliveryMen.id,
-            "ongoing"
-          );
-          setOngoingPackages(response);
-        } else {
-          return;
+    if (currentDeliveryMen.id) {
+      const fetchOngoingPackages = async () => {
+        try {
+          if (currentDeliveryMen.id !== null) {
+            const response = await packageServiceGetPackagesByUserIdAndStatus(
+              currentDeliveryMen.id,
+              "ongoing"
+            );
+            setOngoingPackages(response);
+          } else {
+            return;
+          }
+        } catch (error) {
+          console.error("Error fetching ongoing packages:", error);
         }
-      } catch (error) {
-        console.error("Error fetching ongoing packages:", error);
-      }
-    };
-
-    fetchOngoingPackages();
+      };
+      fetchOngoingPackages();
+    }
   }, [currentDeliveryMen]);
 
   const combinedPackages = [...pendingPackages, ...ongoingPackages];
@@ -140,22 +147,28 @@ const DeliveryManProfile = () => {
     <div className={s.addPackagesContainer}>
       <div className={s.addPackagesContentContainer}>
         <div className={s.header}>
-          <Header text="Gestionar Pedidos" />
+          <Header text={noDeliveryMan ? "Error" : "Gestionar Pedidos"} />
         </div>
         <div className={s.welcomeCardContainer}>
           <div className={s.welcomeCard}>
             <div className={s.deliveryManData}>
-              <div className={s.profileImage}></div>
-              <div className={s.textContainer}>
-                <h5>{currentDeliveryMen.name}</h5>
-                <p>
-                  {currentDeliveryMen.is_enabled
-                    ? "Habilitado"
-                    : "deshabilitado"}
-                </p>
-              </div>
+              {noDeliveryMan ? (
+                <p>No se encontro un repartidor asociado con ese id</p>
+              ) : (
+                <>
+                  <div className={s.profileImage}></div>
+                  <div className={s.textContainer}>
+                    <h5>{currentDeliveryMen.name}</h5>
+                    <p>
+                      {currentDeliveryMen.is_enabled
+                        ? "Habilitado"
+                        : "deshabilitado"}
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
-            <div>
+            <div style={{ display: noDeliveryMan ? "none" : "block" }}>
               <ChakraProvider>
                 <Switch
                   colorScheme="teal"
@@ -167,9 +180,21 @@ const DeliveryManProfile = () => {
             </div>
           </div>
         </div>
-
+        <Link href={"/admin/manage-orders"}>
+          <button
+            className={s.btnGoHome}
+            style={{
+              display: noDeliveryMan ? "block" : "none",
+            }}
+          >
+            Ir al inicio
+          </button>
+        </Link>
         <>
-          <div className={s.addPackagesContainer}>
+          <div
+            className={s.addPackagesContainer}
+            style={{ display: noDeliveryMan ? "none" : "block" }}
+          >
             <div className={s.addPackagesContentContainer}>
               <PendingDeliveries
                 arrayPackages={combinedPackages}
