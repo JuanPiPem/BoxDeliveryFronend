@@ -24,6 +24,7 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [_error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const Login = () => {
       setError("Por favor, complete todos los campos.");
       return toast.warning("Por favor complete todos los campos");
     }
+    setLoading(true);
     userServiceLogin(userData)
       .then((user) => {
         dispatch(setUser(user.data));
@@ -57,11 +59,14 @@ const Login = () => {
       .then((user) => {
         if (user.is_admin) {
           navigate.push("/admin/manage-orders");
+          setLoading(false);
         } else if (!user.is_admin) {
           navigate.push("/delivery-man/start-work-day");
+          setLoading(false);
         }
       })
       .catch((error) => {
+        setLoading(false);
         let errorMessage = "Error al intentar loguearse.";
         if (error.response?.data === "Please complete all the fields")
           return toast.warning("Por favor complete todos los campos");
@@ -117,7 +122,7 @@ const Login = () => {
             </div>
           </form>
           <div className={s.buttonLogin} onClick={handleSubmit}>
-            <ButtonDarkBlue text="Ingresar" />
+            <ButtonDarkBlue text="Ingresar" loading={loading} />
           </div>
           <Link href={"/register"}>
             <div style={{ width: "100%" }}>

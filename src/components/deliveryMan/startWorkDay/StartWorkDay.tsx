@@ -27,6 +27,7 @@ type PendingPackage = {
 
 const StartWorkDay = () => {
   const [pendingPackages, setPendingPackages] = useState<PendingPackage[]>([]);
+
   const [ongoingPackages, setOngoingPackages] = useState<PendingPackage[]>([]);
   const [deliveredPackages, setDeliveredPackages] = useState<PendingPackage[]>(
     []
@@ -97,20 +98,6 @@ const StartWorkDay = () => {
   const handleStartPackage = async (packageId: string) => {
     try {
       await packageServiceStartTrip(packageId);
-
-      const updatedPendingPackages = pendingPackages.filter(
-        (packageItem) => packageItem.id !== packageId
-      );
-      const updatedPackage = pendingPackages.find(
-        (packageItem) => packageItem.id === packageId
-      );
-
-      if (updatedPackage) {
-        setPendingPackages(updatedPendingPackages);
-        setOngoingPackages([...ongoingPackages, updatedPackage]);
-      } else {
-        console.error("Updated package is undefined");
-      }
     } catch (error) {
       console.error("Error updating package status:", error);
     }

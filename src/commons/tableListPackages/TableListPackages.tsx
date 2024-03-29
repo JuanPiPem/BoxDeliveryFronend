@@ -23,11 +23,15 @@ type Prop = {
 //Example: <TableListPackages packageNumber="#0A235" address="Amenabar2356" city="CABA" viewType="paquetes-admin" section="repartos-pendientes" status="en-curso"/>
 
 const TableListPackages = (prop: Prop) => {
-  const [iniciarClicked, setIniciarClicked] = useState(false);
-
+  const [iniciarClicked, setIniciarClicked] = useState({
+    [prop.packageNumber]: false,
+  });
   const handleIniciarClick = () => {
     prop.onStartPackage(prop.packageNumber);
-    setIniciarClicked(true);
+    setIniciarClicked((prevState) => ({
+      ...prevState,
+      [prop.packageNumber]: true,
+    }));
   };
 
   return (
@@ -50,27 +54,32 @@ const TableListPackages = (prop: Prop) => {
             <div
               className={`${s.statusContainer}`}
               id={
-                prop.status === "pending" && !iniciarClicked
+                prop.status === "pending" && !iniciarClicked[prop.packageNumber]
                   ? s.PENDIENTE
                   : prop.status === "ongoing" ||
-                    (prop.status === "pending" && iniciarClicked)
+                    (prop.status === "pending" &&
+                      iniciarClicked[prop.packageNumber])
                   ? s.EN_CURSO
                   : s.ENTREGADO
               }
             >
-              {prop.status === "pending" && !iniciarClicked ? (
+              {prop.status === "pending" &&
+              !iniciarClicked[prop.packageNumber] ? (
                 <StatusPending />
               ) : prop.status === "ongoing" ||
-                (prop.status === "pending" && iniciarClicked) ? (
+                (prop.status === "pending" &&
+                  iniciarClicked[prop.packageNumber]) ? (
                 <StatusInProgress />
               ) : (
                 <StatusDelivered />
               )}
               <p className={`${s.statusText}`}>
-                {prop.status === "pending" && !iniciarClicked
+                {prop.status === "pending" &&
+                !iniciarClicked[prop.packageNumber]
                   ? "PENDIENTE"
                   : prop.status === "ongoing" ||
-                    (prop.status === "pending" && iniciarClicked)
+                    (prop.status === "pending" &&
+                      iniciarClicked[prop.packageNumber])
                   ? "EN CURSO"
                   : "ENTREGADO"}
               </p>
@@ -79,7 +88,7 @@ const TableListPackages = (prop: Prop) => {
           {prop.viewType === "home-repartidor" &&
           prop.section === "repartos-pendientes" &&
           prop.status === "pending" &&
-          !iniciarClicked ? (
+          !iniciarClicked[prop.packageNumber] ? (
             <button className={`${s.button}`} onClick={handleIniciarClick}>
               Iniciar
             </button>
