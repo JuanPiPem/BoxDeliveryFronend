@@ -55,10 +55,15 @@ const AddPackages = () => {
   };
   const handleSumbit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const weight = parseFloat(formData.weight as string);
+    if (weight <= 0 || weight >= 20) {
+      return toast.warning(
+        "El peso del paquete debe ser mayor o igual a 0 y menor que 20kg "
+      );
+    }
     if (
       formData.receiver_name === "" ||
-      formData.weight === 0 ||
-      formData.weight === "" ||
       formData.address === "" ||
       formData.date === ""
     )
@@ -75,7 +80,7 @@ const AddPackages = () => {
   };
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey:process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || "UNDEFINED",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || "UNDEFINED",
     libraries,
   });
   if (loadError) return <div>Error al cargar la API de Google Maps</div>;
