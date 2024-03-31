@@ -5,7 +5,7 @@ on:
     branches: [develop]
   pull_request:
     branches: [develop]
-    types: [ synchronize]
+    types: [synchronize]
 
 jobs:
   avoid_reduncy:
@@ -92,5 +92,5 @@ jobs:
         with:
           command: npm run test:e2e
           start: npm run start-test
-          wait-on: http://localhost:3001
-          #wait-on: http://localhost:$PORT_LOCAL_AP
+          wait-on: http://localhost:$PORT_LOCAL_APP
+          #wait-on: http://localhost:3001
