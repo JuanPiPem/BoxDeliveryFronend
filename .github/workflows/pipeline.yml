@@ -92,5 +92,5 @@ jobs:
         with:
           command: npm run test:e2e
           start: npm run start-test
-          wait-on: http://localhost:$PORT_LOCAL_APP
+          wait-on: http://localhost:${{ secrets.PORT_LOCAL_APP }}
           #wait-on: http://localhost:3001
