@@ -4,14 +4,6 @@ const NEXT_PUBLIC_LOCAL_URL = "http://localhost:3001";
 describe("Register component", () => {
   beforeEach("try", () => {
     cy.visit(`${NEXT_PUBLIC_LOCAL_URL}/register`);
-    cy.request({
-      method: "DELETE",
-      url: `http://localhost:5002/api/users/delete/deliveryman/test`,
-      body: {
-        email: "email@gmail.com",
-      },
-      failOnStatusCode: false,
-    });
   });
 
   it("should display the registration form", () => {
