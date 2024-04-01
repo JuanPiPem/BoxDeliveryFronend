@@ -30,8 +30,6 @@ const DeliveryMen = () => {
   const [dayOfWeek, setDayOfWeek] = useState("");
   const [currentDayOfMonth, setCurrentDayOfMonth] = useState("");
   const [currentMonth, setCurrentMonth] = useState("");
-  //const [monthNumber, setMonthNumber] = useState("");
-  //const [year, setYear] = useState("");
 
   const handleVectorContainerClick = () => {
     if (packagesListRef.current) {
@@ -49,10 +47,9 @@ const DeliveryMen = () => {
 
   const handleVectorUpClick = () => {
     if (packagesListRef.current) {
-      // Utiliza scrollTo para llevar al inicio del scroll
       packagesListRef.current.scrollTo({
         top: 0,
-        behavior: "auto", // Cambiado a "auto" para un desplazamiento instantáneo
+        behavior: "auto",
       });
 
       setAtBottom(false);
@@ -120,12 +117,10 @@ const DeliveryMen = () => {
           packagesListRef.current.clientHeight;
         setIsScrollable(scrolled);
 
-        // Verifica si el scroll está cerca del final
         const atBottom =
           packagesListRef.current.scrollTop +
             packagesListRef.current.clientHeight >=
-          packagesListRef.current.scrollHeight - 1; // Cambiado a "-1" para que se considere inmediatamente al llegar al final
-
+          packagesListRef.current.scrollHeight - 1;
         setAtBottom(atBottom);
       }
     };
@@ -159,61 +154,59 @@ const DeliveryMen = () => {
         >
           {deliverymen &&
             deliverymen.map((deliveryman) => (
-              <>
-                <Link href={`/admin/delivery-man-profile/${deliveryman.id}`}>
-                  <div className={s.contentUser} key={deliveryman.id}>
-                    <div className={s.percentage}>
-                      {deliveryman.is_enabled === true ||
-                      (deliveryman.packagesQuantity ===
-                        deliveryman.packagesDeliveredQuantity &&
-                        deliveryman.packagesQuantity !== 0) ? (
-                        <PieChart
-                          percent={Math.floor(
-                            (deliveryman.packagesDeliveredQuantity /
-                              deliveryman.packagesQuantity) *
-                              100
-                          )}
-                        />
-                      ) : (
-                        <PieChart percent={0} />
-                      )}
-                    </div>
-                    <div className={s.nameAndState}>
-                      <div id={s.objetoName}>{deliveryman.name}</div>
-                      <div className={s.profileState}>
-                        {Math.floor(
+              <Link key={deliveryman.id} href={`/admin/delivery-man-profile/${deliveryman.id}`}>
+                <div className={s.contentUser}>
+                  <div className={s.percentage}>
+                    {deliveryman.is_enabled === true ||
+                    (deliveryman.packagesQuantity ===
+                      deliveryman.packagesDeliveredQuantity &&
+                      deliveryman.packagesQuantity !== 0) ? (
+                      <PieChart
+                        percent={Math.floor(
                           (deliveryman.packagesDeliveredQuantity /
                             deliveryman.packagesQuantity) *
                             100
-                        ) === 100 ? (
-                          <div className={s.colorPoint}>
-                            <ColorPoint state={"entregado"} />
-                          </div>
-                        ) : deliveryman.is_enabled === false ? (
-                          <div className={s.colorPoint}>
-                            <ColorPoint state={"deshabilitado"} />
-                          </div>
-                        ) : (
-                          <div className={s.colorPoint}>
-                            <ColorPoint state={"en curso"} />
-                          </div>
                         )}
-                        {(deliveryman.packagesDeliveredQuantity /
-                          deliveryman.packagesQuantity) *
-                          100 ===
-                        100 ? (
-                          <div>{"Entregado"}</div>
-                        ) : deliveryman.is_enabled === false ? (
-                          <div>{"Deshabilitado"}</div>
-                        ) : (
-                          <div>{"En curso"}</div>
-                        )}
-                      </div>
-                    </div>
-                    <div className={s.profilePicture}></div>
+                      />
+                    ) : (
+                      <PieChart percent={0} />
+                    )}
                   </div>
-                </Link>
-              </>
+                  <div className={s.nameAndState}>
+                    <div id={s.objetoName}>{deliveryman.name}</div>
+                    <div className={s.profileState}>
+                      {Math.floor(
+                        (deliveryman.packagesDeliveredQuantity /
+                          deliveryman.packagesQuantity) *
+                          100
+                      ) === 100 ? (
+                        <div className={s.colorPoint}>
+                          <ColorPoint state={"entregado"} />
+                        </div>
+                      ) : deliveryman.is_enabled === false ? (
+                        <div className={s.colorPoint}>
+                          <ColorPoint state={"deshabilitado"} />
+                        </div>
+                      ) : (
+                        <div className={s.colorPoint}>
+                          <ColorPoint state={"en curso"} />
+                        </div>
+                      )}
+                      {(deliveryman.packagesDeliveredQuantity /
+                        deliveryman.packagesQuantity) *
+                        100 ===
+                      100 ? (
+                        <div>{"Entregado"}</div>
+                      ) : deliveryman.is_enabled === false ? (
+                        <div>{"Deshabilitado"}</div>
+                      ) : (
+                        <div>{"En curso"}</div>
+                      )}
+                    </div>
+                  </div>
+                  <div className={s.profilePicture}></div>
+                </div>
+              </Link>
             ))}
         </div>
         {deliverymen.length > 4 ? (

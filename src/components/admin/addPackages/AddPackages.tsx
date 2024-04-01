@@ -7,8 +7,7 @@ import Header from "commons/header/Header";
 import { packageServiceAddPackage } from "services/package.service";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useLoadScript, Autocomplete } from "@react-google-maps/api";
-const libraries: ("places" | "geometry")[] = ["places", "geometry"];
+import { Autocomplete } from "@react-google-maps/api"; // Importa Autocomplete desde @react-google-maps/api
 
 const AddPackages = () => {
   type FormData = {
@@ -79,12 +78,6 @@ const AddPackages = () => {
     }
   };
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || "UNDEFINED",
-    libraries,
-  });
-  if (loadError) return <div>Error al cargar la API de Google Maps</div>;
-  if (!isLoaded) return <div>Cargando la API de Google Maps...</div>;
 
   return (
     <div className={s.addPackagesContainer}>
