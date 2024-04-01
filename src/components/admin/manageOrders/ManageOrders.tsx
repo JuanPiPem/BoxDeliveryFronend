@@ -168,19 +168,18 @@ const ManageOrders = () => {
             const dayOfMonth = currentDateCopy.getDate();
 
             return (
-              <>
-                <div
-                  key={index}
-                  className={`${s.specificDate} ${
-                    index === currentDay ? s.today : s.future
-                  }`}
-                >
-                  <p className={s.day}>{weekday}</p>
-                  <p className={`${s.num} ${saira.className}`}>{dayOfMonth}</p>
-                </div>
-              </>
+              <div
+                key={index} 
+                className={`${s.specificDate} ${
+                  index === currentDay ? s.today : s.future
+                }`}
+              >
+                <p className={s.day}>{weekday}</p>
+                <p className={`${s.num} ${saira.className}`}>{dayOfMonth}</p>
+              </div>
             );
           })}
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="19"

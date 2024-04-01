@@ -1,3 +1,4 @@
+
 "use client";
 //import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
@@ -7,6 +8,8 @@ import "./globals.scss";
 import { Provider } from "react-redux";
 import store from "state/store";
 import RoutesProtection from "../components/routesProtection/routesProtection";
+import { LoadScript } from "@react-google-maps/api";
+
 //import { useSelector } from "react-redux";
 //import { RootState } from "../state/store";
 
@@ -28,8 +31,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <Provider store={store}>
         <body className={`${roboto.className} body`}>
-          {/* {user.id ? <Navbar /> : null} */}
-          <RoutesProtection>{children}</RoutesProtection>
+          <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || ""} libraries={["places"]}>
+            <RoutesProtection>{children}</RoutesProtection>
+          </LoadScript>
         </body>
       </Provider>
     </html>
