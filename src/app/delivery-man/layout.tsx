@@ -1,26 +1,13 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 import Navbar from "commons/navbar/Navbar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
-import { userServiceMe } from "services/user.service";
 import Link from "next/link";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
-  const [role, setRole] = useState("");
 
-/*   useEffect(() => {
-    userServiceMe()
-      .then((user) => {
-        if (user) {
-          return user.is_admin ? setRole("admin") : setRole("delivery-man");
-        }
-      })
-      .catch(() => {
-        console.error();
-      });
-  }, [role, user]); */
   return (
     <>
       {user.id ? <Navbar /> : null}
