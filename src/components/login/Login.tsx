@@ -59,10 +59,8 @@ const Login = () => {
       .then((user) => {
         if (user.is_admin) {
           navigate.push("/admin/manage-orders");
-          setLoading(false);
         } else if (!user.is_admin) {
           navigate.push("/delivery-man/start-work-day");
-          setLoading(false);
         }
       })
       .catch((error) => {
