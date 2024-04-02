@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
   const [role, setRole] = useState("");
 
-  useEffect(() => {
+/*   useEffect(() => {
     userServiceMe()
       .then((user) => {
         if (user) {
@@ -20,11 +20,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       .catch(() => {
         console.error();
       });
-  }, [role, user]);
+  }, [role, user]); */
   return (
     <>
       {user.id ? <Navbar /> : null}
-      {role === "delivery-man" ? (
+      {!user.is_admin ? (
         children
       ) : (
         <div className="unauthorizedDiv">
@@ -32,8 +32,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <p className="unathorizedP">
             No esta autorizado para acceder a esta pagina
           </p>
-          <Link href={role === "admin" ? "/admin/manage-orders" : "/login"}>
-            <button>Ir al {role === "admin" ? "inicio" : "login"} </button>
+          <Link href={user.is_admin ? "/admin/manage-orders" : "/login"}>
+            <button>Ir al {user.is_admin ? "inicio" : "login"} </button>
           </Link>
         </div>
       )}

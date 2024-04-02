@@ -9,22 +9,11 @@ import Link from "next/link";
 export default function RootLayout({ children }: { children: ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
   const [role, setRole] = useState("");
-  useEffect(() => {
-    userServiceMe()
-      .then((user) => {
-        if (user) {
-          return user.is_admin ? setRole("admin") : setRole("delivery-man");
-        }
-      })
-      .catch(() => {
-        console.error();
-      });
-  }, [role, user]);
 
   return (
     <>
       {user.id ? <Navbar /> : null}
-      {role === "admin" ? (
+      {user.is_admin ? (
         children
       ) : (
         <div className="unauthorizedDiv">
@@ -34,13 +23,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </p>
           <Link
             href={
-              role === "delivery-man"
+              !user.is_admin
                 ? "/delivery-man/start-work-day"
                 : "/login"
             }
           >
             <button>
-              Ir al {role === "delivery-man" ? "inicio" : "login"}{" "}
+              Ir al {!user.is_admin ? "inicio" : "login"}{" "}
             </button>
           </Link>
         </div>
