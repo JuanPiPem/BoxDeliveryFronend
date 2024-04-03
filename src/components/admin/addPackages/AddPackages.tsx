@@ -73,7 +73,7 @@ const AddPackages = () => {
       toast.success("Paquete agregado exitosamente!", {
         duration: 1200,
         onAutoClose() {
-          return router.push("/admin/packages");
+          return router.push("/");
         },
       });
     } catch (error) {
