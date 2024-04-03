@@ -27,15 +27,32 @@
   height: 81px;
   border-radius: 15px;
   position: fixed;
-  margin-left: 8px;
-  margin-right: 15px;
-  margin-bottom: 15px;
-  margin-top: 291px;
+  margin: 291px 15px 15px 8px;
   background-color: $light-violet;
   color: $dark-green;
   .bold {
     color: $darker-green;
     font-weight: 600;
+  }
+}
+.found {
+  display: none;
+}
+.notFound {
+  width: 296px;
+  height: 81px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 15px;
+  line-height: 21px;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 15px;
+
+  .bold {
+    font-weight: 500;
   }
 }
 .deliveryData {

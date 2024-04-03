@@ -27,11 +27,11 @@ const DeliveryInProgress = () => {
   const params = useParams();
 
   const fetchPackage = async () => {
-    return await packageServiceGetSingleById(params.id.toString()).then(
-      (singlePackage) => {
+    return await packageServiceGetSingleById(params.id.toString())
+      .then((singlePackage) => {
         dispatch(setCurrentPackage(singlePackage));
-      }
-    );
+      })
+      .catch(() => {});
   };
   useEffect(() => {
     dispatch(removePackage());
@@ -40,7 +40,9 @@ const DeliveryInProgress = () => {
   }, [dispatch, params]);
 
   const handleClick = async () => {
-    if (currentPackage.user_id === null) return router.back();
+    console.log(currentPackage);
+    if (currentPackage.user_id === null || currentPackage.user_id === "")
+      return router.back();
     if (currentPackage.status === "pending") {
       await packageServiceStartTrip(params.id.toString());
       try {
@@ -91,8 +93,17 @@ const DeliveryInProgress = () => {
   return (
     <>
       <div className={s.inProgressConteiner}>
-        <Header text={`reparto ${packageStatus()}`} />
-        <div className={s.inProgressMap}>
+        <Header
+          text={
+            currentPackage.id
+              ? `reparto ${packageStatus()}`
+              : `Paquete no encontrado`
+          }
+        />
+        <div
+          className={s.inProgressMap}
+          style={{ display: currentPackage.id ? "block" : "none" }}
+        >
           <div className={s.map}>
             <Map destination={currentPackage.address} />
           </div>
@@ -107,12 +118,21 @@ const DeliveryInProgress = () => {
             </div>
           </div>
         </div>
+        <div
+          className={`${s.deliveryDataContainer} ${
+            currentPackage.id ? s.found : s.notFound
+          }`}
+        >
+          <span className={s.bold}>
+            No hemos encontrado un paquete <br /> con el identificador
+            proporcionado
+          </span>
+        </div>
 
         <div className={s.inProgressBtn}>
           <div className="darkblue" onClick={handleClick}>
             <ButtonDarkBlue
               text={
-                // currentPackage.status
                 currentPackage.user_id === null
                   ? "volver"
                   : currentPackage.status === "ongoing"
