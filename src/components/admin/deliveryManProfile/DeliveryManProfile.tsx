@@ -18,6 +18,7 @@ import {
 import { useParams } from "next/navigation";
 import { removeCurrentDeliveryMen, setCurrentDeliveryMen } from "state/user";
 import Link from "next/link";
+import { AxiosError } from "axios";
 
 type PendingPackage = {
   id: string;
@@ -42,20 +43,26 @@ const DeliveryManProfile = () => {
     []
   );
   const [noDeliveryMan, setNoDeliveryMan] = useState(false);
+  const [deliveryManIdInvalid, setDeliveryManIdInvalid] = useState(false);
   const currentDeliveryMen = useSelector(
     (state: RootState) => state.currentDeliveryMen
   );
 
   useEffect(() => {
     const fetchDeliveryMan = async () => {
-      const deliveryMan = await userServiceGetSingle(id);
       try {
+        const deliveryMan = await userServiceGetSingle(id);
         if (deliveryMan) {
           dispatch(removeCurrentDeliveryMen());
           dispatch(setCurrentDeliveryMen(deliveryMan));
         } else setNoDeliveryMan(true);
       } catch (error) {
-        console.error(error);
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.data === "Id de usuario no válido") {
+          setDeliveryManIdInvalid(true);
+        } else {
+          console.error(error);
+        }
       }
     };
     fetchDeliveryMan();
@@ -154,6 +161,8 @@ const DeliveryManProfile = () => {
             <div className={s.deliveryManData}>
               {noDeliveryMan ? (
                 <p>No se encontro un repartidor asociado con ese id</p>
+              ) : deliveryManIdInvalid ? (
+                <p>Id de usuario no válido</p>
               ) : (
                 <>
                   <div className={s.profileImage}></div>
@@ -168,7 +177,12 @@ const DeliveryManProfile = () => {
                 </>
               )}
             </div>
-            <div style={{ display: noDeliveryMan ? "none" : "block" }}>
+            <div
+              style={{
+                display:
+                  noDeliveryMan || deliveryManIdInvalid ? "none" : "block",
+              }}
+            >
               <ChakraProvider>
                 <Switch
                   colorScheme="teal"
@@ -184,7 +198,7 @@ const DeliveryManProfile = () => {
           <button
             className={s.btnGoHome}
             style={{
-              display: noDeliveryMan ? "block" : "none",
+              display: noDeliveryMan || deliveryManIdInvalid ? "block" : "none",
             }}
           >
             Ir al inicio
@@ -193,7 +207,9 @@ const DeliveryManProfile = () => {
         <>
           <div
             className={s.addPackagesContainer}
-            style={{ display: noDeliveryMan ? "none" : "block" }}
+            style={{
+              display: noDeliveryMan || deliveryManIdInvalid ? "none" : "block",
+            }}
           >
             <div className={s.addPackagesContentContainer}>
               <PendingDeliveries
