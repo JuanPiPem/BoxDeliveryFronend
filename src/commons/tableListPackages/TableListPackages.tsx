@@ -8,6 +8,8 @@ import StatusPending from "assets/img/StatusPending";
 import StatusDelivered from "assets/img/StatusDelivered";
 import Link from "next/link";
 import { shortText } from "../../utils/textTrimmer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
 
 type Prop = {
   viewType: string;
@@ -23,6 +25,7 @@ type Prop = {
 //Example: <TableListPackages packageNumber="#0A235" address="Amenabar2356" city="CABA" viewType="paquetes-admin" section="repartos-pendientes" status="en-curso"/>
 
 const TableListPackages = (prop: Prop) => {
+  const user = useSelector((state: RootState) => state.user);
   const [iniciarClicked, setIniciarClicked] = useState({
     [prop.packageNumber]: false,
   });
@@ -37,17 +40,34 @@ const TableListPackages = (prop: Prop) => {
   return (
     <>
       <div className={`${s.container}`}>
-        <Link href={`/delivery-man/delivery-in-progress/${prop.packageNumber}`}>
-          <div className={`${s.div1}`}>
+        {!user.is_admin ? (
+          <Link
+            href={`/delivery-man/delivery-in-progress/${prop.packageNumber}`}
+          >
+            <div className={s.div1}>
+              <Package />
+              <div className={s.div2}>
+                <p className={`${s.txt} ${s.fontBold}`}>
+                  #{prop.packageNumber}
+                </p>
+                <p className={`${s.txt} ${s.fontNormal}`}>
+                  {shortText(prop.address, 3)} <br />
+                </p>
+              </div>
+            </div>
+          </Link>
+        ) : (
+          <div className={s.div1}>
             <Package />
-            <div className={`${s.div2}`}>
+            <div className={s.div2}>
               <p className={`${s.txt} ${s.fontBold}`}>#{prop.packageNumber}</p>
               <p className={`${s.txt} ${s.fontNormal}`}>
                 {shortText(prop.address, 3)} <br />
               </p>
             </div>
           </div>
-        </Link>
+        )}
+
         <div className={`${s.div3}`}>
           {prop.viewType === "home-repartidor" ||
           prop.viewType === "perfil-repartidor" ? (
