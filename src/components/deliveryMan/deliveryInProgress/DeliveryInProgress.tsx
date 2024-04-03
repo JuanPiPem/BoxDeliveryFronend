@@ -93,41 +93,39 @@ const DeliveryInProgress = () => {
   return (
     <>
       <div className={s.inProgressConteiner}>
-        <Header
-          text={
-            currentPackage.id
-              ? `reparto ${packageStatus()}`
-              : `Paquete no encontrado`
-          }
-        />
-        <div
-          className={s.inProgressMap}
-          style={{ display: currentPackage.id ? "block" : "none" }}
-        >
-          <div className={s.map}>
-            <Map destination={currentPackage.address} />
-          </div>
-          <div className={s.deliveryDataContainer}>
-            <div className={s.deliveryData}>
-              <span className={s.bold}>Destino: </span>
-              {shortText(currentPackage.address)} <br />
-              <span className={s.bold}> Número de paquete: </span> #
-              {currentPackage.id} <br />
-              <span className={s.bold}> Recibe: </span>
-              {currentPackage.receiver_name}
+
+        <Header text={`reparto ${packageStatus()}`} />
+        {currentPackage.status === "delivered" ? (
+          <div>
+            <div className={s.statusDeliveryDataContainer}>
+              <div className={s.statusDeliveryData}>
+                <span className={s.bold}>Destino: </span>
+                {shortText(currentPackage.address)} <br />
+                <span className={s.bold}> Número de paquete: </span> #
+                {currentPackage.id} <br />
+                <span className={s.bold}> Recibe: </span>
+                {currentPackage.receiver_name}
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          className={`${s.deliveryDataContainer} ${
-            currentPackage.id ? s.found : s.notFound
-          }`}
-        >
-          <span className={s.bold}>
-            No hemos encontrado un paquete <br /> con el identificador
-            proporcionado
-          </span>
-        </div>
+        ) : (
+          <div className={s.inProgressMap}>
+            <div className={s.map}>
+              <Map destination={currentPackage.address} />
+            </div>
+            <div className={s.deliveryDataContainer}>
+              <div className={s.deliveryData}>
+                <span className={s.bold}>Destino: </span>
+                {shortText(currentPackage.address)} <br />
+                <span className={s.bold}> Número de paquete: </span> #
+                {currentPackage.id} <br />
+                <span className={s.bold}> Recibe: </span>
+                {currentPackage.receiver_name}
+              </div>
+            </div>
+          </div>
+        )}
+
 
         <div className={s.inProgressBtn}>
           <div className="darkblue" onClick={handleClick}>
