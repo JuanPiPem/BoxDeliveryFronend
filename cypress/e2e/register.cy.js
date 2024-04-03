@@ -2,7 +2,7 @@
 const NEXT_PUBLIC_LOCAL_URL = "http://localhost:3001";
 
 describe("Register component", () => {
-  beforeEach("try", () => {
+  beforeEach("visit page", () => {
     cy.visit(`${NEXT_PUBLIC_LOCAL_URL}/register`);
   });
 

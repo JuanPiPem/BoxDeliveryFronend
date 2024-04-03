@@ -23,12 +23,10 @@ const SendEmail = () => {
       .then(() => setStepper(3))
       .catch((err) => {
         toast.error(
-          err.response.data ===
-            "We could not find an account associated with that email"
-            ? "No pudimos encontrar una cuenta asociada con ese correo electrónico"
+          err.response.data === "Email does not exist"
+            ? "No se encontró una cuenta asociada a ese correo electrónico."
             : err.response.data,
           {
-            description: "Intente nuevamente",
             duration: 10000,
           }
         );
