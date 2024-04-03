@@ -5,7 +5,7 @@ import ButtonDarkBlue from "commons/buttonDarkBlue/ButtonDarkBlue";
 import s from "./swornDeclaration.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { removeUser } from "../../../state/user";
 import {
   userServiceEnableDeliveryman,
@@ -23,7 +23,6 @@ const SwornDeclaration = () => {
   const navigate = useRouter();
   const dispatch = useDispatch();
   const router = useRouter();
-  const pathname = usePathname();
   const [cuestionA, setCuestionA] = useState("");
   const [cuestionB, setCuestionB] = useState("");
   const [cuestionC, setCuestionC] = useState("");
@@ -100,11 +99,10 @@ const SwornDeclaration = () => {
           label: "Aceptar",
           onClick: () => navigate.push("/delivery-man/start-work-day"),
         },
+        onAutoClose() {
+          return router.push("/delivery-man/start-work-day");
+        },
       });
-      setTimeout(() => {
-        if (pathname !== "/delivery-man/sworn-declaration") return;
-        return router.push("/delivery-man/start-work-day");
-      }, 4000);
     } catch (error) {
       const err =
         (error as ApiError).response.data ===
@@ -112,13 +110,13 @@ const SwornDeclaration = () => {
           ? "Limite maximo de 10 paquetes por dia"
           : (error as ApiError).response;
       toast.error("Error con la asignacion de paquetes", {
-        duration: 2000,
+        duration: 3500,
         description: `${err}`,
+        onAutoClose() {
+          return router.push("/delivery-man/start-work-day");
+        },
       });
       localStorage.removeItem("selectedIds");
-      setTimeout(() => {
-        return router.push("/delivery-man/start-work-day");
-      }, 2000);
     }
   };
 
