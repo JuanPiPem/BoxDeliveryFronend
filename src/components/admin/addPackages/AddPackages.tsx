@@ -64,6 +64,7 @@ const AddPackages = () => {
     if (
       formData.receiver_name === "" ||
       formData.address === "" ||
+      formData.weight === "" ||
       formData.date === ""
     )
       return toast.warning("Complete todos los campos por favor");
