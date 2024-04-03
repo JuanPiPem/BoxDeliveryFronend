@@ -91,27 +91,41 @@ const DeliveryInProgress = () => {
     <>
       <div className={s.inProgressConteiner}>
         <Header text={`reparto ${packageStatus()}`} />
-        <div className={s.inProgressMap}>
-          <div className={s.map}>
-            <Map destination={currentPackage.address} />
-          </div>
-          <div className={s.deliveryDataContainer}>
-            <div className={s.deliveryData}>
-              <span className={s.bold}>Destino: </span>
-              {shortText(currentPackage.address)} <br />
-              <span className={s.bold}> Número de paquete: </span> #
-              {currentPackage.id} <br />
-              <span className={s.bold}> Recibe: </span>
-              {currentPackage.receiver_name}
+        {currentPackage.status === "delivered" ? (
+          <div>
+            <div className={s.statusDeliveryDataContainer}>
+              <div className={s.statusDeliveryData}>
+                <span className={s.bold}>Destino: </span>
+                {shortText(currentPackage.address)} <br />
+                <span className={s.bold}> Número de paquete: </span> #
+                {currentPackage.id} <br />
+                <span className={s.bold}> Recibe: </span>
+                {currentPackage.receiver_name}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className={s.inProgressMap}>
+            <div className={s.map}>
+              <Map destination={currentPackage.address} />
+            </div>
+            <div className={s.deliveryDataContainer}>
+              <div className={s.deliveryData}>
+                <span className={s.bold}>Destino: </span>
+                {shortText(currentPackage.address)} <br />
+                <span className={s.bold}> Número de paquete: </span> #
+                {currentPackage.id} <br />
+                <span className={s.bold}> Recibe: </span>
+                {currentPackage.receiver_name}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className={s.inProgressBtn}>
           <div className="darkblue" onClick={handleClick}>
             <ButtonDarkBlue
               text={
-                // currentPackage.status
                 currentPackage.user_id === null
                   ? "volver"
                   : currentPackage.status === "ongoing"
