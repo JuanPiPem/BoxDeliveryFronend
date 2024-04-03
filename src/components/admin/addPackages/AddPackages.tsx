@@ -69,15 +69,16 @@ const AddPackages = () => {
       return toast.warning("Complete todos los campos por favor");
     try {
       await packageServiceAddPackage(formData);
-      toast.success("Paquete agregado exitosamente!");
-      return setTimeout(() => {
-        router.push("/admin/packages");
-      }, 1000);
+      toast.success("Paquete agregado exitosamente!", {
+        duration: 1200,
+        onAutoClose() {
+          return router.push("/admin/packages");
+        },
+      });
     } catch (error) {
       return toast.error("Error al intentar agregar el paquete");
     }
   };
-
 
   return (
     <div className={s.addPackagesContainer}>
