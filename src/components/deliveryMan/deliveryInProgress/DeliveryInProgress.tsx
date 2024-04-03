@@ -59,11 +59,12 @@ const DeliveryInProgress = () => {
       await packageServiceFinishTrip(params.id.toString());
       try {
         toast.success("Finalizaste el viaje exitosamente", {
+          duration: 2000,
           description: "Al siguiente paquete -->",
+          onAutoClose() {
+            return router.push("/delivery-man/start-work-day");
+          },
         });
-        return setTimeout(() => {
-          router.push("/delivery-man/start-work-day");
-        }, 2000);
       } catch (error) {
         return toast.error("No se pudo finalizar el viaje", {
           description: "Refresque e intente nuevamente!",

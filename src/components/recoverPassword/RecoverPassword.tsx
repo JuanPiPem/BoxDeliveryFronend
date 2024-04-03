@@ -37,10 +37,12 @@ const RecoverPassword = () => {
         { withCredentials: true }
       )
       .then(() => {
-        toast.success("Contraseña cambiada exitosamente!");
-        return setTimeout(() => {
-          return router.push("/login");
-        }, 2000);
+        toast.success("Contraseña cambiada exitosamente!", {
+          duration: 2000,
+          onAutoClose() {
+            return router.push("/login");
+          },
+        });
       })
       .catch((err) => {
         const errMessage =
@@ -48,15 +50,15 @@ const RecoverPassword = () => {
             ? "El token ha expirado"
             : err.response.data;
         toast.error(errMessage, {
+          duration: 12000,
           action: {
             label: "Obtener nuevo token",
             onClick: () => router.push("/send-email"),
           },
-          duration: 12000,
+          onAutoClose() {
+            return router.push("/send-email");
+          },
         });
-        setTimeout(() => {
-          router.push("/send-email");
-        }, 12000);
       });
   };
   return (
