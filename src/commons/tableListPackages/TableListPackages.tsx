@@ -10,21 +10,14 @@ import Link from "next/link";
 import { shortText } from "../../utils/textTrimmer";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
+import { TablelistPackagesProps } from "types/types";
 
-type Prop = {
-  viewType: string;
-  section: string;
-  status: string;
-  packageNumber: string;
-  address: string;
-  onStartPackage: (packageId: string) => void;
-};
 //The viewType can be: "paquetes-admin", "perfil-repartidor" o "home-repartidor"
 //The sections can be: "repartos-pendientes" "historial-repartos"
 //The status can be: "pendiente", "en-curso" o "entregado"
 //Example: <TableListPackages packageNumber="#0A235" address="Amenabar2356" city="CABA" viewType="paquetes-admin" section="repartos-pendientes" status="en-curso"/>
 
-const TableListPackages = (prop: Prop) => {
+const TableListPackages = (prop: TablelistPackagesProps) => {
   const user = useSelector((state: RootState) => state.user);
   const [iniciarClicked, setIniciarClicked] = useState({
     [prop.packageNumber]: false,

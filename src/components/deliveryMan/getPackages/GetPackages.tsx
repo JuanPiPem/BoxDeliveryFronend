@@ -12,21 +12,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "state/store";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
-
-type item = {
-  id: string;
-  receiver_name: string;
-  address: string;
-  status: string;
-  date: string;
-  weight: number;
-  user_id: number;
-  checked: boolean;
-};
+import { FullPackage } from "types/types";
 
 const GetPackages = () => {
   const router = useRouter();
-  const [packages, setPackages] = useState<item[]>([]);
+  const [packages, setPackages] = useState<FullPackage[]>([]);
   const [isScrollable, setIsScrollable] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
   const packagesListRef = useRef<HTMLDivElement>(null);
@@ -136,7 +126,7 @@ const GetPackages = () => {
               className={`${s.packagesList} ${isScrollable ? s.scrolled : ""}`}
               ref={packagesListRef}
             >
-              {packages.map((item: item, index: number) => (
+              {packages.map((item: FullPackage, index: number) => (
                 <React.Fragment key={item.id}>
                   <SelectPackage package={item} />
                   {index < packages?.length - 1 && <hr className={s.lastHr} />}

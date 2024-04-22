@@ -1,13 +1,9 @@
 import React from "react";
 import s from "./buttonDarkBlue.module.scss";
 import { PulseLoader } from "react-spinners";
+import { ButtonDarkBlueProps } from "types/types";
 
-type Prop = {
-  text: string | undefined;
-  loading?: boolean;
-};
-
-const ButtonDarkBlue = (prop: Prop) => {
+const ButtonDarkBlue = (prop: ButtonDarkBlueProps) => {
   return (
     <button className={`${s.buttonStyle}`}>
       {prop.loading ? (

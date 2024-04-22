@@ -8,24 +8,12 @@ import Link from "next/link";
 import VectorUp from "assets/img/VectorUp";
 import PieChart from "commons/pieChart/PieChart";
 import { userServiceGetDeliverymenWithPackagesQuantityByDate } from "services/user.service";
+import { DeliveryMan } from "types/types";
 
 const DeliveryMen = () => {
-  type deliveryman = {
-    id: number;
-    email: string;
-    name: string;
-    last_name: string;
-    profile_photo: string;
-    is_admin: boolean;
-    is_confirmed: boolean;
-    is_enabled: boolean;
-    packagesQuantity: number;
-    packagesDeliveredQuantity: number;
-  };
-
   const [isScrollable, setIsScrollable] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
-  const [deliverymen, setDeliverymen] = useState<deliveryman[]>([]);
+  const [deliverymen, setDeliverymen] = useState<DeliveryMan[]>([]);
   const packagesListRef = useRef<HTMLDivElement>(null);
   const [dayOfWeek, setDayOfWeek] = useState("");
   const [currentDayOfMonth, setCurrentDayOfMonth] = useState("");
@@ -154,7 +142,10 @@ const DeliveryMen = () => {
         >
           {deliverymen &&
             deliverymen.map((deliveryman) => (
-              <Link key={deliveryman.id} href={`/admin/delivery-man-profile/${deliveryman.id}`}>
+              <Link
+                key={deliveryman.id}
+                href={`/admin/delivery-man-profile/${deliveryman.id}`}
+              >
                 <div className={s.contentUser}>
                   <div className={s.percentage}>
                     {deliveryman.is_enabled === true ||

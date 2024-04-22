@@ -2,12 +2,9 @@ import React from "react";
 import s from "./pieChart.module.scss";
 import { ChakraProvider } from "@chakra-ui/react";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+import { PieChartProps } from "types/types";
 
-type Prop = {
-  percent: number;
-};
-
-const PieChart = (prop: Prop) => {
+const PieChart = (prop: PieChartProps) => {
   return (
     <ChakraProvider>
       <CircularProgress

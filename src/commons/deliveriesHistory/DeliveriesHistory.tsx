@@ -9,28 +9,15 @@ import VectorUp from "assets/img/VectorUp";
 import DeployArrowDown from "assets/img/DeployArrowDown";
 import DeployArrowRight from "assets/img/DeployArrowRight";
 import { usePathname } from "next/navigation";
+import { Package } from "types/types";
+import { CommonDeliveriesProps } from "types/types";
 
 const saira = Saira({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
-type items = {
-  id: string;
-  address: string;
-  status: string;
-};
-
-type Prop = {
-  arrayPackages: Array<items>;
-  view: string;
-  section: string;
-  openSection?: string;
-  setOpenSection?: (section: string) => void;
-  onStartPackage: (packageId: string) => void;
-};
-
-function DeliveriesHistory(prop: Prop) {
+function DeliveriesHistory(prop: CommonDeliveriesProps) {
   const pathname = usePathname();
   const [show, setShow] = useState(true);
   const [isScrollable, setIsScrollable] = useState(false);
@@ -156,7 +143,7 @@ function DeliveriesHistory(prop: Prop) {
               <div className={s.packagesNumber}>
                 {prop.arrayPackages.length} paquetes entregados
               </div>
-              {prop.arrayPackages.map((item: items, index) => (
+              {prop.arrayPackages.map((item: Package, index) => (
                 <div key={index + 1}>
                   <hr className={s.hr} />
                   <div className={s.boxTrash}>

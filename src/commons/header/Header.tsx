@@ -3,10 +3,11 @@ import s from "./header.module.scss";
 import { Saira } from "next/font/google";
 import LeftArrow from "assets/img/LeftArrow";
 import Link from "next/link";
+import { HeaderProps } from "types/types";
 
 const saira = Saira({ weight: "700", subsets: ["latin"] });
 
-const Header: React.FC<Props> = ({
+const Header: React.FC<HeaderProps> = ({
   text,
   showArrow = true,
   link = "/",
@@ -30,9 +31,4 @@ const Header: React.FC<Props> = ({
   );
 };
 
-type Props = {
-  text: string;
-  showArrow?: boolean;
-  link?: string;
-};
 export default Header;

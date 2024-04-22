@@ -4,22 +4,9 @@ import React, { useEffect, useState } from "react";
 import Checked from "assets/img/Checked";
 import Link from "next/link";
 import { shortText } from "utils/textTrimmer";
+import { SelectPackageProp } from "types/types";
 
-type Prop = {
-  package: typePackage;
-};
-
-type typePackage = {
-  id: string;
-  receiver_name: string;
-  status: string;
-  address: string;
-  date: string;
-  weight: number;
-  user_id: number;
-};
-
-function SelectPackage(prop: Prop) {
+function SelectPackage(prop: SelectPackageProp) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [checked, setChecked] = useState(false);
   const handleClick = () => {
