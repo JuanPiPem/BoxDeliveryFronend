@@ -9,28 +9,15 @@ import VectorUp from "assets/img/VectorUp";
 import DeployArrowDown from "assets/img/DeployArrowDown";
 import DeployArrowRight from "assets/img/DeployArrowRight";
 import { usePathname } from "next/navigation";
+import { Package } from "types/types";
+import { CommonDeliveriesProps } from "types/types";
 
 const saira = Saira({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
-type items = {
-  id: string;
-  address: string;
-  status: string;
-};
-
-type Prop = {
-  arrayPackages: Array<items>;
-  view: string;
-  section: string;
-  openSection?: string;
-  setOpenSection?: (section: string) => void;
-  onStartPackage: (packageId: string) => void;
-};
-
-function PendingDeliveries(prop: Prop) {
+function PendingDeliveries(prop: CommonDeliveriesProps) {
   const pathname = usePathname();
   const [show, setShow] = useState(true);
   const [isScrollable, setIsScrollable] = useState(false);
@@ -157,7 +144,7 @@ function PendingDeliveries(prop: Prop) {
             ref={packagesListRef}
           >
             <div>
-              {prop.arrayPackages.map((item: items, index) => (
+              {prop.arrayPackages.map((item: Package, index) => (
                 <div key={index}>
                   <div className={s.boxTrash}>
                     {prop.view === "home-repartidor" &&

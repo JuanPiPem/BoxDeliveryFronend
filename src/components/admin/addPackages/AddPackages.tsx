@@ -8,16 +8,10 @@ import { packageServiceAddPackage } from "services/package.service";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Autocomplete } from "@react-google-maps/api"; // Importa Autocomplete desde @react-google-maps/api
+import { AddPackage } from "types/types";
 
 const AddPackages = () => {
-  type FormData = {
-    address: string;
-    receiver_name: string;
-    date: string;
-    weight: number | string;
-    // [key: string]: string;
-  };
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<AddPackage>({
     address: "",
     receiver_name: "",
     date: "",
@@ -30,7 +24,7 @@ const AddPackages = () => {
   const day = date.getDate().toString().padStart(2, "0");
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
-    fieldName: keyof FormData
+    fieldName: keyof AddPackage
   ): void => {
     const { value } = e.target;
     setFormData((prevFormData) => {

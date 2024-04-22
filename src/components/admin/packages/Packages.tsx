@@ -8,21 +8,10 @@ import VectorDown from "assets/img/VectorDown";
 import VectorUp from "assets/img/VectorUp";
 import { packageServiceGetByStatusAndDate } from "services/package.service";
 import { getFormattedDate } from "utils/getFormattDate";
-
-type packageDelivered = {
-  id: string;
-  receiver_name: string;
-  address: string;
-  status: string;
-  date: string;
-  weight: number;
-  user_id: number | null;
-};
+import { FullPackage } from "types/types";
 
 const Packages = () => {
-  const [packagesDelivered, setPackagesDelivered] = useState<
-    packageDelivered[]
-  >([]);
+  const [packagesDelivered, setPackagesDelivered] = useState<FullPackage[]>([]);
   const [isScrollable, setIsScrollable] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
   const packagesListRef = useRef<HTMLDivElement>(null);
@@ -67,6 +56,7 @@ const Packages = () => {
         setPackagesDelivered(packagesDelivered);
       })
       .catch((err) => console.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

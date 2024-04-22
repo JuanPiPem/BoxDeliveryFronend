@@ -19,29 +19,16 @@ import { useParams } from "next/navigation";
 import { removeCurrentDeliveryMen, setCurrentDeliveryMen } from "state/user";
 import Link from "next/link";
 import { AxiosError } from "axios";
-
-type PendingPackage = {
-  id: string;
-  receiver_name: string;
-  date: string;
-  weight: number;
-  address: string;
-  status: string;
-  user_id: number;
-  createdAt: string;
-  updatedAt: string;
-};
+import { FullPackage } from "types/types";
 
 const DeliveryManProfile = () => {
   const params = useParams();
   const id = parseInt(params.id as string, 10);
   const dispatch = useDispatch();
   const [openSection, setOpenSection] = useState("");
-  const [pendingPackages, setPendingPackages] = useState<PendingPackage[]>([]);
-  const [ongoingPackages, setOngoingPackages] = useState<PendingPackage[]>([]);
-  const [deliveredPackages, setDeliveredPackages] = useState<PendingPackage[]>(
-    []
-  );
+  const [pendingPackages, setPendingPackages] = useState<FullPackage[]>([]);
+  const [ongoingPackages, setOngoingPackages] = useState<FullPackage[]>([]);
+  const [deliveredPackages, setDeliveredPackages] = useState<FullPackage[]>([]);
   const [noDeliveryMan, setNoDeliveryMan] = useState(false);
   const [deliveryManIdInvalid, setDeliveryManIdInvalid] = useState(false);
   const currentDeliveryMen = useSelector(
