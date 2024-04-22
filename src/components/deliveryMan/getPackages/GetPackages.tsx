@@ -56,6 +56,7 @@ const GetPackages = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (packages.length === 0) return router.back();
     if (typeof window !== "undefined") {
       const checkedPackageIds = localStorage.getItem("selectedIds");
       if (!user.id) throw new Error();
@@ -113,37 +114,54 @@ const GetPackages = () => {
         <div className={s.header}>
           <Header text="Obtener Paquetes" />
         </div>
-
-        <div className={`${s.headList}`}>
-          <div>¿Cuantos paquetes repartiras hoy?</div>
-        </div>
-
-        <div
-          className={`${s.packagesList} ${isScrollable ? s.scrolled : ""}`}
-          ref={packagesListRef}
-        >
-          {packages.map((item: item, index: number) => (
-            <React.Fragment key={item.id}>
-              <SelectPackage package={item} />
-              {index < packages?.length - 1 && <hr className={s.lastHr} />}
-            </React.Fragment>
-          ))}
-        </div>
-        {packages.length > 8 && (
-          <div
-            className={s.vectorContainer}
-            onClick={
-              atBottom ? handleVectorUpClick : handleVectorContainerClick
-            }
-          >
-            <hr className={s.lastHr} />
-            <div className={s.vector}>
-              {atBottom ? <VectorUp /> : <VectorDown />}
+        {packages.length === 0 ? (
+          <div className={s.outerContainer}>
+            <div className={`${s.headList}`}>
+              <h4>No hay mas paquetes para repartir</h4>
+            </div>
+            <div className={s.contentContainer}>
+              <p>
+                Puedes ir a descansar, <br /> o si coicideras que esto es un
+                error, <br /> por favor{" "}
+                <span> ponte en contacto con el administrador</span>
+              </p>
             </div>
           </div>
+        ) : (
+          <>
+            <div className={`${s.headList}`}>
+              <div>¿Cuantos paquetes repartiras hoy?</div>
+            </div>
+            <div
+              className={`${s.packagesList} ${isScrollable ? s.scrolled : ""}`}
+              ref={packagesListRef}
+            >
+              {packages.map((item: item, index: number) => (
+                <React.Fragment key={item.id}>
+                  <SelectPackage package={item} />
+                  {index < packages?.length - 1 && <hr className={s.lastHr} />}
+                </React.Fragment>
+              ))}
+            </div>
+            {packages.length > 8 && (
+              <div
+                className={s.vectorContainer}
+                onClick={
+                  atBottom ? handleVectorUpClick : handleVectorContainerClick
+                }
+              >
+                <hr className={s.lastHr} />
+                <div className={s.vector}>
+                  {atBottom ? <VectorUp /> : <VectorDown />}
+                </div>
+              </div>
+            )}{" "}
+          </>
         )}
         <div className={`${s.button}`} onClick={handleSubmit}>
-          <ButtonDarkBlue text="Iniciar Jornada" />
+          <ButtonDarkBlue
+            text={packages.length !== 0 ? "Iniciar Jornada" : "volver"}
+          />
         </div>
       </div>
       <Toaster richColors position="top-center" />
