@@ -26,6 +26,7 @@ const SwornDeclaration = () => {
   const [cuestionA, setCuestionA] = useState("");
   const [cuestionB, setCuestionB] = useState("");
   const [cuestionC, setCuestionC] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleOptionChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -80,6 +81,7 @@ const SwornDeclaration = () => {
   };
   const handleSumit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     checkDeclarations();
 
     try {
@@ -237,7 +239,7 @@ const SwornDeclaration = () => {
           </div>
 
           <div className={s.btnContinue} onClick={handleSumit}>
-            <ButtonDarkBlue text="continuar" />
+            <ButtonDarkBlue text="continuar" loading={loading} />
           </div>
         </div>
         <Toaster richColors expand={true} position="bottom-center" />
