@@ -1,18 +1,18 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 import Navbar from "commons/navbar/Navbar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Link from "next/link";
+import Loading from "./loading";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
-
   return (
     <>
       {user.id ? <Navbar /> : null}
       {user.is_admin ? (
-        children
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       ) : (
         <div className="unauthorizedDiv">
           <h3>Error 401:</h3>
