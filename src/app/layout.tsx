@@ -1,12 +1,13 @@
 "use client";
 //import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import React, { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 import "./globals.scss";
 import { Provider } from "react-redux";
 import store from "state/store";
 import RoutesProtection from "../components/routesProtection/routesProtection";
 import { LoadScript } from "@react-google-maps/api";
+import Loading from "./loading";
 
 //import { useSelector } from "react-redux";
 //import { RootState } from "../state/store";
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             googleMapsApiKey={process.env.NEXT_PUBLIC_API_GOOGLE_MAPS || ""}
             libraries={["places"]}
           >
-            <RoutesProtection>{children}</RoutesProtection>
+            <RoutesProtection>
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </RoutesProtection>
           </LoadScript>
         </body>
       </Provider>
