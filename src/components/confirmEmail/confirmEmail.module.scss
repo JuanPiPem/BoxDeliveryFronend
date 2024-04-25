@@ -40,9 +40,6 @@
       margin-top: 10px;
       padding-top: 0;
     }
-    #small {
-      font-size: 14px;
-    }
   }
   .buttonContainer {
     width: 100%;
@@ -57,7 +54,38 @@
     }
   }
 }
-
+.contentContainerForError {
+  height: 260px;
+  .content {
+    height: 85%;
+    justify-content: inherit;
+    .svgContainer {
+      margin-top: 11px;
+    }
+    .textContainer {
+      margin-top: -10px;
+      h2 {
+        margin: 12px 0 0;
+      }
+      p {
+        margin-top: 3px;
+        font-size: 14px;
+      }
+      #small2 {
+        margin-top: 12px;
+      }
+      .sendEmailButton {
+        all: unset;
+        text-align: center;
+        padding: 5px 90px;
+        background-color: #cef169;
+        font-weight: 500;
+        border-radius: 10px;
+        border: 1.5px solid #cef169;
+      }
+    }
+  }
+}
 .fadeInAnimation {
   animation: fadeIn ease-in-out 1s;
 }
@@ -78,4 +106,71 @@
   100% {
     transform: scale(1);
   }
+}
+
+.loaderContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -12px;
+
+  gap: 5vh;
+  .headerLoading {
+    h4 {
+      color: $dark-green;
+      font-size: 17px;
+    }
+  }
+}
+
+.loader {
+  width: 70px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(farthest-side, #0d4d58 94%, #0000) top/8px 8px
+      no-repeat,
+    conic-gradient(#0000 30%, #0d4d58);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+
+  animation: l13 1s infinite linear;
+}
+@keyframes l13 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.successContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  .header {
+    margin-bottom: 20px;
+    width: 88%;
+    .title {
+      margin-bottom: 0;
+      font-size: 18px;
+      letter-spacing: 1.5px;
+    }
+    p {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+  }
+  a {
+    all: unset;
+  }
+}
+
+.buttonGoToLogin {
+  all: unset;
+  letter-spacing: 1px;
+  font-size: 14.5px;
+  text-transform: uppercase;
+  text-decoration-line: underline;
 }
