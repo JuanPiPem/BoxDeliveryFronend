@@ -85,6 +85,13 @@ export const userServiceConfirmEmail = async (token: string) => {
   return res;
 };
 
+export const resendConfirmationEmail = async (token: string) => {
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/users/resend-confirmation-email/${token}`
+  );
+  return res;
+};
+
 export const userServiceGetAll = async () => {
   const res = await axios.get(
     `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/users/`
