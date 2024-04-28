@@ -16,7 +16,7 @@ import { packageServiceGetNumberOfPacakgesAndPackagesDeliveredByDate } from "ser
 
 const saira = Saira({ subsets: ["latin"], weight: "700" });
 
-const weekdays = ["lun", "mar", "mier", "jue", "vier"];
+const weekdays = ["lun", "mar", "mier", "jue", "vier", "sab", "dom"];
 const months = [
   "Enero",
   "Febrero",
@@ -35,8 +35,10 @@ const months = [
 const ManageOrders = () => {
   const user = useSelector((state: RootState) => state.user);
   const [show, setShow] = useState(true);
+  // lun 0, mar 1, mier 2, jue 3 vier 4
   const [currentDay, setCurrentDay] = useState(0);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  // Sum Apr 21 2024 23:59 la fecha seleccionada
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [deliverymenQuantity, setDeliverymenQuantity] = useState(0);
   const [deliverymenEnabledQuantity, setDeliverymenEnabledQuantity] =
     useState(0);
@@ -44,6 +46,7 @@ const ManageOrders = () => {
   const [packagesQuantity, setPackagesQuantity] = useState(0);
   const [deliveredPackagesQuantity, setDeliveredPackagesQuantity] = useState(0);
   const [percentPackages, setPercentPackages] = useState(0);
+  // fecha de hoy formato: 28/04/2024
   const currentDateCaptured = new Date().toLocaleDateString("es-Ar", {
     day: "2-digit",
     month: "2-digit",
@@ -58,7 +61,7 @@ const ManageOrders = () => {
       }
     );
     packageServiceGetNumberOfPacakgesAndPackagesDeliveredByDate(
-      formatDate(currentDate, "yyyy-MM-dd")
+      formatDate(selectedDate, "yyyy-MM-dd")
     )
       .then((response) => {
         setPackagesQuantity(response.packagesQuantity);
@@ -89,7 +92,7 @@ const ManageOrders = () => {
   };
 
   const handlePreviousDay = () => {
-    const prevDate = new Date(currentDate);
+    const prevDate = new Date(selectedDate);
     let daysToSubtract = 1;
 
     if (weekdays[currentDay] === "lun") {
@@ -98,14 +101,14 @@ const ManageOrders = () => {
 
     prevDate.setDate(prevDate.getDate() - daysToSubtract);
 
-    setCurrentDate(prevDate);
+    setSelectedDate(prevDate);
     setCurrentDay((prevDay) =>
       prevDay === 0 ? weekdays.length - 1 : prevDay - daysToSubtract
     );
   };
 
   const handleNextDay = () => {
-    const nextDate = new Date(currentDate);
+    const nextDate = new Date(selectedDate);
     let daysToAdd = 1;
 
     if (weekdays[currentDay] === "vier") {
@@ -114,10 +117,28 @@ const ManageOrders = () => {
 
     nextDate.setDate(nextDate.getDate() + daysToAdd);
 
-    setCurrentDate(nextDate);
+    setSelectedDate(nextDate);
     setCurrentDay((prevDay) =>
       prevDay === weekdays.length - 1 ? 0 : prevDay + daysToAdd
     );
+  };
+
+  const isFutureDate = (date1: string, date2: string) => {
+    const date1Array = date1.split("/");
+    const date2Array = date2.split("/");
+    const [day1, month1, year1] = date1Array;
+    const [day2, month2, year2] = date2Array;
+
+    // 22/05/2024       27/04/2024
+
+    if (parseFloat(year1) - parseFloat(year2) < 0) return false;
+    if (parseFloat(year1) - parseFloat(year2) > 0) return true;
+
+    if (parseFloat(month1) - parseFloat(month2) < 0) return false;
+    if (parseFloat(month1) - parseFloat(month2) > 0) return true;
+
+    if (parseFloat(day1) - parseFloat(day2) < 0) return false;
+    else return true;
   };
 
   return (
@@ -134,7 +155,7 @@ const ManageOrders = () => {
       </div>
       <div className={s.calendarCard}>
         <div className={s.header}>
-          <h5>{months[currentDate.getMonth()]}</h5>
+          <h5>{months[selectedDate.getMonth()]}</h5>
         </div>
         <div className={s.dates}>
           <svg
@@ -161,17 +182,27 @@ const ManageOrders = () => {
             />
           </svg>
           {weekdays.map((weekday, index) => {
-            const currentDateCopy = new Date(currentDate);
+            const selectedDateFormatted = new Date(
+              selectedDate
+            ).toLocaleDateString("es-Ar", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+            const currentDateCopy = new Date(selectedDate);
             currentDateCopy.setDate(
               currentDateCopy.getDate() + index - currentDay
             );
             const dayOfMonth = currentDateCopy.getDate();
-
             return (
               <div
-                key={index} 
+                key={index}
                 className={`${s.specificDate} ${
-                  index === currentDay ? s.today : s.future
+                  index === currentDay
+                    ? s.today
+                    : isFutureDate(selectedDateFormatted, currentDateCaptured)
+                    ? s.future
+                    : s.past
                 }`}
               >
                 <p className={s.day}>{weekday}</p>
@@ -190,7 +221,7 @@ const ManageOrders = () => {
             style={{
               cursor: "pointer",
               pointerEvents:
-                formatDate(currentDate, "dd/MM/yyyy") === currentDateCaptured
+                formatDate(selectedDate, "dd/MM/yyyy") === currentDateCaptured
                   ? "none"
                   : "auto",
             }}
@@ -216,18 +247,20 @@ const ManageOrders = () => {
       <div className={s.header} onClick={toggle}>
         <h5>Detalles</h5>
         <div className={s.dateContainer}>
-          <h6>{formatDate(currentDate, "dd/MM/yyyy")}</h6>
+          <h6>{formatDate(selectedDate, "dd/MM/yyyy")}</h6>
         </div>
         <div className={s.arrow}>
           {show ? <DeployArrowDown /> : <DeployArrowRight />}
         </div>
       </div>
-      {show ? (
+      {show &&
+      selectedDate.toString().split(" ")[0].toLowerCase() !==
+        ("sat" || "sun") ? (
         <div className={s.detailsContainer}>
           <div className={s.info}>
             <div className={s.deliveryCard}>
               <div>
-                {formatDate(currentDate, "dd/MM/yyyy") ===
+                {formatDate(selectedDate, "dd/MM/yyyy") ===
                   currentDateCaptured &&
                 deliverymenQuantity &&
                 deliverymenEnabledQuantity ? (
@@ -238,7 +271,7 @@ const ManageOrders = () => {
               </div>
               <div className={s.text}>
                 <h6>Repartidores</h6>
-                {formatDate(currentDate, "dd/MM/yyyy") ===
+                {formatDate(selectedDate, "dd/MM/yyyy") ===
                 currentDateCaptured ? (
                   <p>
                     {deliverymenEnabledQuantity}/{deliverymenQuantity}{" "}
@@ -258,7 +291,7 @@ const ManageOrders = () => {
             </div>
             <hr />
             <div className={s.deliveryCard}>
-              {formatDate(currentDate, "dd/MM/yyyy") === currentDateCaptured &&
+              {formatDate(selectedDate, "dd/MM/yyyy") === currentDateCaptured &&
               packagesQuantity &&
               deliveredPackagesQuantity ? (
                 <PieChart percent={Math.floor(percentPackages)} />
@@ -267,7 +300,7 @@ const ManageOrders = () => {
               )}
               <div className={s.text}>
                 <h6>Paquetes</h6>
-                {formatDate(currentDate, "dd/MM/yyyy") ===
+                {formatDate(selectedDate, "dd/MM/yyyy") ===
                 currentDateCaptured ? (
                   <p>
                     {" "}

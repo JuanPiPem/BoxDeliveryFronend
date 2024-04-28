@@ -17,11 +17,13 @@ import { Toaster, toast } from "sonner";
 import { RootState } from "state/store";
 import { removePackage, setCurrentPackage } from "state/packages";
 import { shortText } from "utils/textTrimmer";
+import PackageInfo from "commons/packageInfo/PackageInfo";
 
 const DeliveryInProgress = () => {
   const currentPackage = useSelector(
     (state: RootState) => state.currentPackage
   );
+
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useParams();
@@ -93,21 +95,9 @@ const DeliveryInProgress = () => {
   return (
     <>
       <div className={s.inProgressConteiner}>
-
         <Header text={`reparto ${packageStatus()}`} />
         {currentPackage.status === "delivered" ? (
-          <div>
-            <div className={s.statusDeliveryDataContainer}>
-              <div className={s.statusDeliveryData}>
-                <span className={s.bold}>Destino: </span>
-                {shortText(currentPackage.address)} <br />
-                <span className={s.bold}> Número de paquete: </span> #
-                {currentPackage.id} <br />
-                <span className={s.bold}> Recibe: </span>
-                {currentPackage.receiver_name}
-              </div>
-            </div>
-          </div>
+          <PackageInfo />
         ) : (
           <div className={s.inProgressMap}>
             <div className={s.map}>
@@ -125,7 +115,6 @@ const DeliveryInProgress = () => {
             </div>
           </div>
         )}
-
 
         <div className={s.inProgressBtn}>
           <div className="darkblue" onClick={handleClick}>

@@ -7,7 +7,7 @@ import Header from "commons/header/Header";
 import { packageServiceAddPackage } from "services/package.service";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Autocomplete } from "@react-google-maps/api"; // Importa Autocomplete desde @react-google-maps/api
+// import { Autocomplete } from "@react-google-maps/api"; // Importa Autocomplete desde @react-google-maps/api
 import { AddPackage } from "types/types";
 
 const AddPackages = () => {
@@ -33,14 +33,14 @@ const AddPackages = () => {
   };
   const handleCalendarInput = (e: ChangeEvent<HTMLInputElement>) => {
     const day = e.target.value;
-    const selectedDate = new Date(e.target.value);
-    const dayOfWeek = selectedDate.getDay();
+    //const selectedDate = new Date(e.target.value);
+    // const dayOfWeek = selectedDate.getDay();
 
     // Si la fecha seleccionada es sábado (5) o domingo (6)
-    if (dayOfWeek === 6 || dayOfWeek === 5) {
+    /*if (dayOfWeek === 6 || dayOfWeek === 5) {
       toast.warning("Por favor, seleccione una fecha entre lunes y viernes.");
       e.target.value = ""; // Limpiar el input
-    } else {
+    } else*/ {
       setFormData((prevFormData) => {
         return { ...prevFormData, ["date"]: day };
       });
@@ -82,16 +82,16 @@ const AddPackages = () => {
         <div className={s.form}>
           <div className={s.content}>
             <form>
-              <Autocomplete onLoad={() => {}}>
-                <input
-                  type="text"
-                  placeholder="Dirección"
-                  onBlur={(e) => handleInputChange(e, "address")}
-                  onChange={(e) => handleInputChange(e, "address")}
-                  className={s.input}
-                  autoFocus
-                />
-              </Autocomplete>
+              {/* <Autocomplete onLoad={() => {}}> */}
+              <input
+                type="text"
+                placeholder="Dirección"
+                onBlur={(e) => handleInputChange(e, "address")}
+                onChange={(e) => handleInputChange(e, "address")}
+                className={s.input}
+                autoFocus
+              />
+              {/* </Autocomplete> */}
               <input
                 type="text"
                 className={`${s.input}`}

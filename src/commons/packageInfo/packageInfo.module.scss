@@ -1,0 +1,20 @@
+@import "../../app/globals.scss";
+.statusDeliveryDataContainer {
+  width: 295px;
+  margin: 20px 0;
+  padding: 20px 0;
+  color: $dark-green;
+  background-color: $light-violet;
+  border-radius: 15px;
+  .bold {
+    color: $darker-green;
+    font-weight: 600;
+  }
+}
+.statusDeliveryData {
+  width: 250px;
+  margin-left: 20px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
