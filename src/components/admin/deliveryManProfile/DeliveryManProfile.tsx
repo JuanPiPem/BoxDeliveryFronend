@@ -25,7 +25,7 @@ const DeliveryManProfile = () => {
   const params = useParams();
   const id = parseInt(params.id as string, 10);
   const dispatch = useDispatch();
-  const [openSection, setOpenSection] = useState("");
+  const [openSection, setOpenSection] = useState("pendingDeliveries");
   const [pendingPackages, setPendingPackages] = useState<FullPackage[]>([]);
   const [ongoingPackages, setOngoingPackages] = useState<FullPackage[]>([]);
   const [deliveredPackages, setDeliveredPackages] = useState<FullPackage[]>([]);

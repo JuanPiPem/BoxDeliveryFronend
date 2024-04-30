@@ -138,6 +138,11 @@ function DeliveriesHistory(prop: CommonDeliveriesProps) {
             id="start"
             className={`${s.packagesList} ${isScrollable ? s.scrolled : ""}`}
             ref={packagesListRef}
+            style={{
+              maxHeight: pathname.includes(`admin/delivery-man-profile`)
+                ? "213px"
+                : "145",
+            }}
           >
             <div>
               <div className={s.packagesNumber}>

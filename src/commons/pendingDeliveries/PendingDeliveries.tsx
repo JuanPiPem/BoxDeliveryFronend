@@ -190,7 +190,10 @@ function PendingDeliveries(prop: CommonDeliveriesProps) {
                 atBottom ? handleVectorUpClick : handleVectorContainerClick
               }
             >
-              <hr className={s.lastHr} />
+              <hr
+                className={s.lastHr}
+                style={{ backgroundColor: "#24424d47" }}
+              />
               <div className={s.vector}>
                 {atBottom ? <VectorUp /> : <VectorDown />}
               </div>

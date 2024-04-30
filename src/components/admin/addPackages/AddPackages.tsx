@@ -7,7 +7,7 @@ import Header from "commons/header/Header";
 import { packageServiceAddPackage } from "services/package.service";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Autocomplete } from "@react-google-maps/api"; // Importa Autocomplete desde @react-google-maps/api
+// import { Autocomplete } from "@react-google-maps/api"; // Importa Autocomplete desde @react-google-maps/api
 import { AddPackage } from "types/types";
 
 const AddPackages = () => {
@@ -82,16 +82,16 @@ const AddPackages = () => {
         <div className={s.form}>
           <div className={s.content}>
             <form>
-              <Autocomplete onLoad={() => {}}>
-                <input
-                  type="text"
-                  placeholder="Dirección"
-                  onBlur={(e) => handleInputChange(e, "address")}
-                  onChange={(e) => handleInputChange(e, "address")}
-                  className={s.input}
-                  autoFocus
-                />
-              </Autocomplete>
+              {/* <Autocomplete onLoad={() => {}}> */}
+              <input
+                type="text"
+                placeholder="Dirección"
+                onBlur={(e) => handleInputChange(e, "address")}
+                onChange={(e) => handleInputChange(e, "address")}
+                className={s.input}
+                autoFocus
+              />
+              {/* </Autocomplete> */}
               <input
                 type="text"
                 className={`${s.input}`}

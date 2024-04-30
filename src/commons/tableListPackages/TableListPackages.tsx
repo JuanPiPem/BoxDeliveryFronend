@@ -51,13 +51,17 @@ const TableListPackages = (prop: TablelistPackagesProps) => {
           </Link>
         ) : (
           <div className={s.div1}>
-            <Package />
-            <div className={s.div2}>
-              <p className={`${s.txt} ${s.fontBold}`}>#{prop.packageNumber}</p>
-              <p className={`${s.txt} ${s.fontNormal}`}>
-                {shortText(prop.address, 3)} <br />
-              </p>
-            </div>
+            <Link href={`/admin/singlePackage/${prop.packageNumber}`}>
+              <Package />
+              <div className={s.div2}>
+                <p className={`${s.txt} ${s.fontBold}`}>
+                  #{prop.packageNumber}
+                </p>
+                <p className={`${s.txt} ${s.fontNormal}`}>
+                  {shortText(prop.address, 3)} <br />
+                </p>
+              </div>
+            </Link>
           </div>
         )}
 

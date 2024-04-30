@@ -88,3 +88,10 @@ export const packageServiceGetNumberOfPacakgesAndPackagesDeliveredByDate =
     );
     return res.data;
   };
+
+export const packageServiceDeletePacakge = async (packageId: string) => {
+  const res = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/packages/package/${packageId}`
+  );
+  return res.data;
+};

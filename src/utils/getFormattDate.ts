@@ -23,3 +23,10 @@ export const currentDate = () => {
   const currentDate = `${year}-${monthNumberFormat}-${day} ${time}`;
   return currentDate;
 };
+
+// funcion que recibe una fecha en este formato: aaaa-mm-dd y la devuelve asi: dd/mm/aaaa
+export const formatDate = (date: string) => {
+  const dateArray = date.split("-");
+  const [year, month, day] = dateArray;
+  return day + "/" + month + "/" + year;
+};

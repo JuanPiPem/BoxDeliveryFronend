@@ -4,6 +4,7 @@ import { Saira } from "next/font/google";
 import LeftArrow from "assets/img/LeftArrow";
 import Link from "next/link";
 import { HeaderProps } from "types/types";
+import { useRouter } from "next/navigation";
 
 const saira = Saira({ weight: "700", subsets: ["latin"] });
 
@@ -12,6 +13,7 @@ const Header: React.FC<HeaderProps> = ({
   showArrow = true,
   link = "/",
 }): JSX.Element => {
+  const router = useRouter();
   const contentStyles = showArrow
     ? { justifyContent: "space-between" }
     : { justifyContent: "center" };
@@ -20,11 +22,16 @@ const Header: React.FC<HeaderProps> = ({
       <div className={s.contentContainer}>
         <div className={s.content} style={contentStyles}>
           {text}
-          {showArrow && (
-            <Link href={link}>
-              <LeftArrow />
-            </Link>
-          )}
+          {showArrow &&
+            (link !== "/" ? (
+              <Link href={link}>
+                <LeftArrow />
+              </Link>
+            ) : (
+              <div onClick={() => router.back()}>
+                <LeftArrow />
+              </div>
+            ))}
         </div>
       </div>
     </div>

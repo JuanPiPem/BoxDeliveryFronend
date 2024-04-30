@@ -1,0 +1,21 @@
+@import "../../../app/globals.scss";
+
+.outerContainer {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .contentContainer {
+    width: 83%;
+    display: inherit;
+    flex-direction: inherit;
+    align-items: inherit;
+    position: relative;
+    .buttonContainer {
+      width: 83%;
+      position: fixed;
+      bottom: 5vh;
+    }
+  }
+}
