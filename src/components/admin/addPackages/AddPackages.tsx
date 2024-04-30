@@ -33,14 +33,14 @@ const AddPackages = () => {
   };
   const handleCalendarInput = (e: ChangeEvent<HTMLInputElement>) => {
     const day = e.target.value;
-    //const selectedDate = new Date(e.target.value);
-    // const dayOfWeek = selectedDate.getDay();
+    const selectedDate = new Date(e.target.value);
+    const dayOfWeek = selectedDate.getDay();
 
     // Si la fecha seleccionada es sábado (5) o domingo (6)
-    /*if (dayOfWeek === 6 || dayOfWeek === 5) {
+    if (dayOfWeek === 6 || dayOfWeek === 5) {
       toast.warning("Por favor, seleccione una fecha entre lunes y viernes.");
       e.target.value = ""; // Limpiar el input
-    } else*/ {
+    } else {
       setFormData((prevFormData) => {
         return { ...prevFormData, ["date"]: day };
       });

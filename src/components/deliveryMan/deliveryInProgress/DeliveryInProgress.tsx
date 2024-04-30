@@ -42,7 +42,6 @@ const DeliveryInProgress = () => {
   }, [dispatch, params]);
 
   const handleClick = async () => {
-    console.log(currentPackage);
     if (currentPackage.user_id === null || currentPackage.user_id === "")
       return router.back();
     if (currentPackage.status === "pending") {

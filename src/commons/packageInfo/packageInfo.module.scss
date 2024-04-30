@@ -1,4 +1,5 @@
 @import "../../app/globals.scss";
+
 .statusDeliveryDataContainer {
   width: 295px;
   margin: 20px 0;
@@ -6,9 +7,28 @@
   color: $dark-green;
   background-color: $light-violet;
   border-radius: 15px;
-  .bold {
+  span {
     color: $darker-green;
     font-weight: 600;
+  }
+}
+.notFoundContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .notFoundContentContainer {
+    width: 87%;
+    text-align: center;
+    h2 {
+      font-size: 16px;
+      letter-spacing: 0.3px;
+    }
+    p {
+      font-size: 14px;
+    }
   }
 }
 .statusDeliveryData {
@@ -17,4 +37,113 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 18px;
+}
+.functionalitiesContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  div {
+    width: 32%;
+    background-color: $light-yellow;
+    border-radius: 9px;
+    &:hover {
+      cursor: pointer;
+    }
+    p {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      font-weight: 500;
+      font-size: 12px;
+      margin: 7px 0;
+      color: $dark-green;
+    }
+  }
+}
+
+.alertsContainer {
+  width: 100%;
+  height: 22vh;
+  display: none;
+  justify-content: center;
+  border-radius: 0px 12px 12px;
+  background-color: $light-yellow;
+  &.visible {
+    display: flex;
+    animation: swingInTop 0.8s ease 0s 1 normal forwards;
+  }
+
+  .contentContainer {
+    width: 87%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    .textContainer {
+      color: $dark-green;
+      text-align: center;
+
+      h4 {
+        margin: 1px 0 0;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      h6 {
+        margin: 3px 0 4px;
+        font-weight: 400;
+        font-size: 13px;
+      }
+    }
+
+    .select {
+      padding: 4px 0;
+      color: $darker-green;
+      outline: 1px solid $light-yellow;
+      border: 1px solid whitesmoke;
+      border-radius: 4px;
+      &:focus {
+        background-color: $light-yellow;
+      }
+    }
+    .option {
+      font-weight: 500;
+      background-color: $light-yellow;
+    }
+
+    .btnContainer {
+      display: flex;
+      justify-content: space-evenly;
+
+      button {
+        padding: 10px;
+        color: $dark-green;
+        text-transform: uppercase;
+        border-radius: 9px;
+        border: none;
+      }
+
+      .cancelBtn {
+        background-color: $light-grey;
+      }
+
+      .confirmBtn {
+        font-weight: bold;
+        background-color: $light-grey;
+      }
+    }
+  }
+}
+
+@keyframes swingInTop {
+  0% {
+    opacity: 0;
+    transform: rotateX(-100deg) translateY(-50%);
+    transform-origin: top;
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0%);
+    transform-origin: top;
+  }
 }
