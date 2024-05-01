@@ -7,7 +7,7 @@ import TableListPackages from "commons/tableListPackages/TableListPackages";
 import VectorDown from "assets/img/VectorDown";
 import VectorUp from "assets/img/VectorUp";
 import { packageServiceGetByStatusAndDate } from "services/package.service";
-import { getFormattedDate } from "utils/getFormattDate";
+import { getFormattedDate } from "utils/dateHelpers";
 import { FullPackage } from "types/types";
 
 const Packages = () => {
