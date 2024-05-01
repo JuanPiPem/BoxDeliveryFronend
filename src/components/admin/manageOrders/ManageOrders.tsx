@@ -13,10 +13,21 @@ import { userServiceGetNumberOfDeliverymenAndEnadledDeliverymen } from "services
 import PieChart from "commons/pieChart/PieChart";
 import { RootState } from "../../../state/store";
 import { packageServiceGetNumberOfPacakgesAndPackagesDeliveredByDate } from "services/package.service";
+import { isFutureDate } from "utils/dateHelpers";
 
 const saira = Saira({ subsets: ["latin"], weight: "700" });
 
 const weekdays = ["lun", "mar", "mier", "jue", "vier", "sab", "dom"];
+const weekDaysStartingToday = () => {
+  const index = weekdays.indexOf("mier");
+  if (index !== -1) {
+    const beforeToday = weekdays.slice(0, index);
+    const afterToday = weekdays.slice(index);
+    return afterToday.concat(beforeToday);
+  } else {
+    return weekdays;
+  }
+};
 const months = [
   "Enero",
   "Febrero",
@@ -35,9 +46,7 @@ const months = [
 const ManageOrders = () => {
   const user = useSelector((state: RootState) => state.user);
   const [show, setShow] = useState(true);
-  // lun 0, mar 1, mier 2, jue 3 vier 4
   const [currentDay, setCurrentDay] = useState(0);
-  // Sum Apr 21 2024 23:59 la fecha seleccionada
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [deliverymenQuantity, setDeliverymenQuantity] = useState(0);
   const [deliverymenEnabledQuantity, setDeliverymenEnabledQuantity] =
@@ -46,7 +55,6 @@ const ManageOrders = () => {
   const [packagesQuantity, setPackagesQuantity] = useState(0);
   const [deliveredPackagesQuantity, setDeliveredPackagesQuantity] = useState(0);
   const [percentPackages, setPercentPackages] = useState(0);
-  // fecha de hoy formato: 28/04/2024
   const currentDateCaptured = new Date().toLocaleDateString("es-Ar", {
     day: "2-digit",
     month: "2-digit",
@@ -68,6 +76,7 @@ const ManageOrders = () => {
         setDeliveredPackagesQuantity(response.deliveredPackagesQuantity);
       })
       .catch((err) => console.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -92,15 +101,13 @@ const ManageOrders = () => {
   };
 
   const handlePreviousDay = () => {
+    const weekDaysStartingTodayArray = weekDaysStartingToday();
     const prevDate = new Date(selectedDate);
     let daysToSubtract = 1;
-
-    if (weekdays[currentDay] === "lun") {
+    if (weekDaysStartingTodayArray[currentDay] === "lun") {
       daysToSubtract = 3;
     }
-
     prevDate.setDate(prevDate.getDate() - daysToSubtract);
-
     setSelectedDate(prevDate);
     setCurrentDay((prevDay) =>
       prevDay === 0 ? weekdays.length - 1 : prevDay - daysToSubtract
@@ -108,37 +115,17 @@ const ManageOrders = () => {
   };
 
   const handleNextDay = () => {
+    const weekDaysStartingTodayArray = weekDaysStartingToday();
     const nextDate = new Date(selectedDate);
     let daysToAdd = 1;
-
-    if (weekdays[currentDay] === "vier") {
+    if (weekDaysStartingTodayArray[currentDay] === "vier") {
       daysToAdd = 3;
     }
-
     nextDate.setDate(nextDate.getDate() + daysToAdd);
-
     setSelectedDate(nextDate);
     setCurrentDay((prevDay) =>
       prevDay === weekdays.length - 1 ? 0 : prevDay + daysToAdd
     );
-  };
-
-  const isFutureDate = (date1: string, date2: string) => {
-    const date1Array = date1.split("/");
-    const date2Array = date2.split("/");
-    const [day1, month1, year1] = date1Array;
-    const [day2, month2, year2] = date2Array;
-
-    // 22/05/2024       27/04/2024
-
-    if (parseFloat(year1) - parseFloat(year2) < 0) return false;
-    if (parseFloat(year1) - parseFloat(year2) > 0) return true;
-
-    if (parseFloat(month1) - parseFloat(month2) < 0) return false;
-    if (parseFloat(month1) - parseFloat(month2) > 0) return true;
-
-    if (parseFloat(day1) - parseFloat(day2) < 0) return false;
-    else return true;
   };
 
   return (
@@ -181,7 +168,7 @@ const ManageOrders = () => {
               stroke="#24424D"
             />
           </svg>
-          {weekdays.map((weekday, index) => {
+          {weekDaysStartingToday().map((weekday, index) => {
             const selectedDateFormatted = new Date(
               selectedDate
             ).toLocaleDateString("es-Ar", {
@@ -204,6 +191,10 @@ const ManageOrders = () => {
                     ? s.future
                     : s.past
                 }`}
+                style={{
+                  display:
+                    weekday === "sab" || weekday === "dom" ? "none" : "flex",
+                }}
               >
                 <p className={s.day}>{weekday}</p>
                 <p className={`${s.num} ${saira.className}`}>{dayOfMonth}</p>

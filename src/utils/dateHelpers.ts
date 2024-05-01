@@ -30,3 +30,17 @@ export const formatDate = (date: string) => {
   const [year, month, day] = dateArray;
   return day + "/" + month + "/" + year;
 };
+export const isFutureDate = (date1: string, date2: string) => {
+  const date1Array = date1.split("/");
+  const date2Array = date2.split("/");
+  const [day1, month1, year1] = date1Array;
+  const [day2, month2, year2] = date2Array;
+  if (parseFloat(year1) - parseFloat(year2) < 0) return false;
+  if (parseFloat(year1) - parseFloat(year2) > 0) return true;
+
+  if (parseFloat(month1) - parseFloat(month2) < 0) return false;
+  if (parseFloat(month1) - parseFloat(month2) > 0) return true;
+
+  if (parseFloat(day1) - parseFloat(day2) < 0) return false;
+  else return true;
+};
