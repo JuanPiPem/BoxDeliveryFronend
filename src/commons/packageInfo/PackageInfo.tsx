@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import s from "./packageInfo.module.scss";
 import { shortText } from "utils/textTrimmer";
-import { formatDate } from "utils/getFormattDate";
+import { formatDate } from "utils/dateHelpers";
 import { useSelector } from "react-redux";
 import { RootState } from "state/store";
 import { statusTranslated } from "utils/translator";
@@ -23,7 +23,7 @@ import { Toaster, toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
 import { DeliveryMan } from "types/types";
 
-const PackageInfo = ({ updatePackage }: { updatePackage: () => void }) => {
+const PackageInfo = ({ updatePackage }: { updatePackage?: () => void }) => {
   const router = useRouter();
   const pathname = usePathname();
   const currentPackage = useSelector(
@@ -120,10 +120,12 @@ const PackageInfo = ({ updatePackage }: { updatePackage: () => void }) => {
         toast.success("Reasignado correctamente", {
           duration: 1500,
           onAutoClose() {
-            return updatePackage();
+            if (!updatePackage) return;
+            else return updatePackage();
           },
           onDismiss() {
-            return updatePackage();
+            if (!updatePackage) return;
+            else return updatePackage();
           },
         });
       } else {
